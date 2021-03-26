@@ -1,0 +1,245 @@
+﻿<div class="section" ng-show="vm.showSearch()">
+    <hr />
+    <h3 ng-show="vm.isGuardian()">ΒΗΜΑ 3:</h3>
+    <h3 ng-show="!vm.isGuardian()">ΒΗΜΑ 2:</h3>
+    <h4 ng-show="vm.isGuardian()">Εισαγωγή ΑΦΜ του έτερου γονέα του φοιτητή</h4>
+    <h4 ng-show="!vm.isGuardian()">Εισαγωγή ΑΦΜ συζύγου του φοιτητή</h4>
+    <p class="text-info" ng-show="vm.isGuardian()">
+        Με βάση το Νόμο 3220/2004 του στεγαστικού επιδόματος, για την εφαρμογή των κριτηρίων θα πρέπει να συνυπολογιστούν τα στοιχεία και των δύο γονέων του φοιτητή, εφόσον βρίσκονται σε έγγαμη σχέση.
+        Απαλλάσσεστε από την υποχρέωση αυτή, μόνο εάν ο έτερος γονέας δεν είναι εν ζωή ή δεν έχετε πλέον έγγαμη σχέση μαζί του.
+    </p>
+    <p class="text-info" ng-show="!vm.isGuardian()">
+        Με βάση το Νόμο 3220/2004 του στεγαστικού επιδόματος, για την εφαρμογή των κριτηρίων θα πρέπει να συνυπολογιστούν τα στοιχεία και της / του συζύγου του φοιτητή/τριας, εφόσον βρίσκονται σε έγγαμη σχέση.
+        Απαλλάσσεστε από την υποχρέωση αυτή, μόνο εάν ο/η σύζυγος δεν είναι εν ζωή ή δεν έχετε πλέον έγγαμη σχέση μαζί του.
+    </p>
+    <form class="form-horizontal" name="otherParentForm">
+        <div class="form-group">
+            <label ng-show="vm.isGuardian()" class="col-md-3 control-label">ΑΦΜ έτερου γονέα:</label>
+            <label ng-show="!vm.isGuardian()" class="col-md-3 control-label">ΑΦΜ συζύγου:</label>
+            <div class="col-md-9">
+                <input afm name="otherParentAFM" placeholder="Εισάγετε έγκυρο ΑΦΜ" ng-click="vm.clearOthers()" class="form-control" ng-model="vm.model.otherParentOrSpouseAFM" />
+                <span style="color: red" ng-show="otherParentForm.otherParentAFM.$invalid">
+                    <span class="text-danger" ng-show="otherParentForm.otherParentAFM.$error.afm">Δεν έχετε εισάγει έγκυρο ΑΦΜ.</span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label ng-show="vm.isGuardian()" class="col-md-3 control-label">Όνομα έτερου γονέα:</label>
+            <label ng-show="!vm.isGuardian()" class="col-md-3 control-label">Όνομα συζύγου:</label>
+            <div class="col-md-9">
+                <input name="otherParentFirstName" placeholder="Εισάγετε τουλάχιστον τους δύο πρώτους χαρακτήρες του ονόματος, με κεφαλαία γράμματα" ng-click="vm.clearOthers()" class="form-control" ng-model="vm.model.otherParentOrSpouseFirstName" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label ng-show="vm.isGuardian()" class="col-md-3 control-label">Επώνυμο έτερου γονέα:</label>
+            <label ng-show="!vm.isGuardian()" class="col-md-3 control-label">Επώνυμο συζύγου:</label>
+            <div class="col-md-9">
+                <input name="otherParentLastName" placeholder="Εισάγετε τουλάχιστον τους δύο πρώτους χαρακτήρες του επωνύμου, με κεφαλαία γράμματα" ng-click="vm.clearOthers()" class="form-control" ng-model="vm.model.otherParentOrSpouseLastName" />
+            </div>
+        </div>
+        <div class="col-md-offset-3 col-md-9">
+            <p ng-show="vm.isGuardian()">
+                <strong>Δηλώνω υπεύθυνα ότι δεν συμπλήρωσα το ΑΦΜ του έτερου γονέα του φοιτητή για τον εξής λόγο:</strong>
+            </p>
+            <p ng-show="!vm.isGuardian()">
+                <strong>Δηλώνω υπεύθυνα ότι δεν συμπλήρωσα το ΑΦΜ του/της συζύγου μου για τον εξής λόγο:</strong>
+            </p>
+        </div>
+        <div ng-show="vm.isGuardian()">
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <div class="radio">
+                        <label ng-click="vm.clearOtherParentData();vm.openConsentModal();">
+                            <input id="divorced" name="parentRadio" type="radio" ng-model="vm.model.otherSelection" value="1" />
+                            Δεν διατηρώ πλέον έγγαμη σχέση με τον έτερο γονέα του φοιτητή ή είμαι άγαμη μητέρα
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label ng-click="vm.clearOtherParentData();vm.openConsentModal();" class="col-md-10 control-label" style="text-align: left">
+                            <input id="otherParentHasDied" name="parentRadio" type="radio" ng-model="vm.model.otherSelection" value="2" />
+                            Ο έτερος γονέας του φοιτητή δεν είναι εν ζωή
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-md-offset-3 col-md-9" ng-show="vm.model.otherSelection == 1 || vm.model.otherSelection == 2">
+                <div class="checkbox">
+                    <label>
+                        <input id="mitrwoConsent" name="mitrwoConsentCheckbox" type="checkbox" ng-model="vm.model.mitrwoPolitwnConsent" value="true" />
+                        αποδέχομαι να
+                    </label>
+                </div>
+            </div>-->
+        </div>
+        <div ng-show="!vm.isGuardian()">
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <div class="radio">
+                        <label ng-click="vm.clearOtherParentData()" class="col-md-10 control-label" style="text-align: left">
+                            <input name="notMarried" type="checkbox" ng-model="vm.model.notMarried" />
+                            Δεν είμαι έγγαμος
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group" ng-show="vm.doNotContinue() || otherParentForm.validationField.$invalid">
+            <label name="validationField" ng-required="vm.isRequired()" ng-model="vm.model.Hidden" />
+            <span class="col-md-offset-3 col-md-9" style="color: red" ng-show="vm.isGuardian() && otherParentForm.validationField.$invalid">
+                <span class="text-danger"
+                      ng-show="otherParentForm.validationField.$error.required">
+                    Συμπληρώστε υποχρεωτικά τα στοιχεία του έτερου γονέα ή επιλέξτε μια από τις άλλες δύο επιλογές
+                </span>
+            </span>
+            <span class="col-md-offset-3 col-md-9" style="color: red" ng-show="!vm.isGuardian() && (vm.doNotContinue() || otherParentForm.validationField.$invalid)">
+                <span class="text-danger" ng-show="vm.doNotContinue() || otherParentForm.validationField.$error.required">
+                    Συμπληρώστε υποχρεωτικά τα στοιχεία του/της συζύγου ή ότι δεν είστε έγγαμος/η
+                </span>
+            </span>
+        </div>
+        <!--<div class="form-group" ng-show="vm.model.otherSelection == 1 || vm.model.otherSelection == 2">
+            <span class="text-danger">
+                Για τον έλεγχο της δήλωσης σας αυτής θα γίνει αυτεπάγγελτη αναζήτηση της Βεβαίωσης Οικογενειακής Κατάστασης από το Μητρώο Πολιτών με τα παρακάτω στοιχεία σας:
+                <br /><br />
+                Όνομα: {{ vm.application.user.firstName }}, <br />
+                Επώνυμο: {{ vm.application.user.lastName }}, <br />
+                Πατρώνυμο: {{ vm.application.user.fathersName }}, <br />
+                Μητρώνυμο: {{ vm.application.user.mothersName }}, <br />
+                Ημ/νία Γέννησης: {{ vm.application.user.birthDate | date: 'dd/MM/yyyy' }}<br />
+                <br /><br />
+                Εάν από την Βεβαίωση της Οικογενειακής Κατάστασης δεν μπορεί να πιστοποιηθεί η δήλωσή σας,
+
+                <span ng-show="vm.model.otherSelection == 1"> πιθανόν να πρέπει να προσκομίσετε επιπλέον δικαιολογητικά (λ.χ. Διαζευκτήριο ή δικαστική απόφαση εάν δεν διατηρείτε πλέον έγγαμη σχέση με τον έτερο γονέα του φοιτητή)</span>
+                <span ng-show="vm.model.otherSelection == 2"> θα πρέπει να προσκομίσετε ληξιαρχική πράξη θανάτου.</span>
+            </span>
+        </div>-->
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <button name="continue" class="btn btn-primary" ng-click="vm.getOtherParentGsisData()" ng-disabled="otherParentForm.$invalid || vm.doNotContinue()">Συνέχεια</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="section" ng-show="!vm.showSearch()">
+    <form class="form-horizontal">
+        <hr />
+        <div class="text-danger"></div>
+        <div ng-show="vm.application.otherParentOrSpouseAFM != null && vm.application.otherParentOrSpouseAFM.length > 0">
+            <h2 ng-show="vm.isGuardian()">Επιβεβαίωση των στοιχείων που αντλήθηκαν από την ΑΑΔΕ για τον έτερο γονέα του φοιτητή</h2>
+            <h2 ng-show="!vm.isGuardian()">Επιβεβαίωση των στοιχείων που αντλήθηκαν από την ΑΑΔΕ για το σύζυγο</h2>
+            <p class="text-info">
+                Η ΑΑΔΕ επέστρεψε τα ακόλουθα στοιχεία για τον ΑΦΜ που δώσατε:
+            </p>
+            <div class="form-group">
+                <label class="col-md-2 control-label">ΑΦΜ</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">
+                        {{vm.application.otherParentOrSpouseAFM}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Όνομα</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">
+                        {{vm.application.otherParentOrSpouseFirstName}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Επώνυμο</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">
+                        {{vm.application.otherParentOrSpouseLastName}}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.application.otherParentHasDied === true">
+            <label ng-show="vm.isGuardian()" class="col-md-8 control-label">Δηλώσατε ότι ο έτερος γονέας του φοιτητή δεν είναι εν ζωή.</label>
+            <label ng-show="!vm.isGuardian()" class="col-md-8 control-label">Δηλώσατε ότι ο σύζυγος δεν είναι εν ζωή.</label>
+        </div>
+        <div class="form-group" ng-show="vm.application.parentsAreDivorced === true">
+            <label ng-show="vm.isGuardian()" class="col-md-8 control-label">Δηλώσατε ότι δεν διατηρείτε πλέον έγγαμη σχέση με τον έτερο γονέα του φοιτητή.</label>
+            <label ng-show="!vm.isGuardian()" class="col-md-8 control-label">Δηλώσατε ότι δεν διατηρείτε πλέον έγγαμη σχέση.</label>
+        </div>
+        <div class="form-group" ng-show="vm.application.notMarried === true">
+            <label ng-show="!vm.isGuardian()" class="col-md-8 control-label">Δηλώσατε ότι δεν είστε έγγαμος.</label>
+        </div>
+
+        <p class="text-info" ng-show="vm.application.otherParentOrSpouseAFM == null && vm.application.otherParentHasDied == null && vm.application.parentsAreDivorced == null && vm.application.applicationStatus <= vm.getStepAppllicationStatus()">
+            Εάν τα παραπάνω στοιχεία είναι σωστά, επιλέξτε <strong>ΕΠΙΒΕΒΑΙΩΣΗ ΤΩΝ ΣΤΟΙΧΕΙΩΝ ΚΑΙ ΣΥΝΕΧΕΙΑ ΤΗΣ ΑΙΤΗΣΗΣ</strong>
+        </p>
+        <p class="text-info" ng-show="vm.application.otherParentOrSpouseAFM == null && vm.application.otherParentHasDied == null && vm.application.parentsAreDivorced == null && vm.application.applicationStatus < vm.getStepApplicationStatus()">
+            Εάν κάποια από τα στοιχεία αυτά δεν είναι σωστά, θα πρέπει πρώτα να προβείτε στις
+            ενδεδειγμένες ενέργειες στο μητρώο της ΑΑΔΕ και μετά από αυτό να συνεχίσετε με την δημιουργία της αίτησης.
+        </p>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <button class="btn btn-orig" ng-click="vm.startOver()" ng-show="vm.showSaveBtn()">Αναζήτηση με άλλο ΑΦΜ</button>
+                <button name="confirmAndContinue" type="submit" class="btn btn-info" ng-click="vm.save()" ng-show="vm.showSaveBtn()">Επιβεβαίωση των στοιχείων και συνέχεια της αίτησης</button>
+            </div>
+        </div>
+        <div class="wizard-bottom-nav-right" ng-show="!vm.showSaveBtn()">
+            <input name="previous" type="button" value="&laquo; Προηγούμενο" class="btn btn-link" ng-click="$parent.vm.goToPreviousStep()" />
+            <input name="next" type="button" value="Επόμενο &raquo;" class="btn btn-primary" ng-click="$parent.vm.goToNextStep()" />
+        </div>
+    </form>
+</div>
+
+<button id="openModalButton" ng-show="false" data-toggle="modal" data-target="#modalConsent">Open Modal</button>
+<div id="modalConsent" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static"  tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="vm.clearOthers();vm.closeModal()">&times;</button>
+                <button type="button" id="closeModalButton" ng-show="false" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Συναίνεση αναζήτησης οικογενειακής κατάστασης</h4>
+            </div>
+            <div class="modal-body">
+                Για την πιστοποίηση της παραπάνω δήλωσης, υπάρχει η δυνατότητα άντλησης της οικογενειακής σας κατάστασης από το Μητρώο Πολιτών. Για να πραγματοποιηθεί η αναζήτηση είναι απαραίτητη η συναίνεσή σας.<br /><br />
+                <span ng-show="vm.model.otherSelection == 1">
+                    Στην περίπτωση που δεν συναινέσετε ή δεν καταστεί δυνατή η πιστοποίηση με βάση τα στοιχεία της οικογενειακής κατάστασης, θα πρέπει να προσκομίσετε: <br /> <br />
+                    α) διαζευκτήριο ή δικαστική απόφαση, εάν δεν διατηρείτε πλέον έγγαμη σχέση με τον έτερο γονέα του φοιτητή<br />
+                    ή<br />
+                    β) πιστοποιητικό οικογενειακής κατάστασης, εάν είστε άγαμη μητέρα. <br />
+                </span>
+                <span ng-show="vm.model.otherSelection == 2">
+                    Στην περίπτωση που δεν συναινέσετε ή δεν καταστεί δυνατή η πιστοποίηση με βάση τα στοιχεία της οικογενειακής κατάστασης, θα πρέπει να προσκομίσετε ληξιαρχική πράξη θανάτου.<br />
+                </span>
+                <br />
+                Η αναζήτηση στο Μητρώο Πολιτών θα γίνει με τα ακόλουθα στοιχεία:
+                <br /><br />
+                Όνομα: {{ vm.application.user.firstName }}, <br />
+                Επώνυμο: {{ vm.application.user.lastName }}, <br />
+                Πατρώνυμο: {{ vm.application.user.fathersName }}, <br />
+                Μητρώνυμο: {{ vm.application.user.mothersName }}, <br />
+                Ημ/νία Γέννησης: {{ vm.application.user.birthDate | date: 'dd/MM/yyyy' }}<br />
+                <br /><br />
+              
+            
+                <div class="radio" style="padding-left: 13px">
+                    <label style="padding-left:5px;font-weight:bold">
+                        <input id="mitrwoConsentTrue" name="mitrwoConsentTrue" type="radio" ng-model="vm.model.mitrwoPolitwnConsent" value="true" />
+                        Συναινώ
+                    </label>
+                </div>
+                <div class="radio" style="padding-left: 13px">
+                    <label style="padding-left:5px;font-weight:bold">
+                        <input id="mitrwoConsentFalse" name="mitrwoConsentFalse" type="radio" ng-model="vm.model.mitrwoPolitwnConsent" value="false" />
+                        Δεν Συναινώ
+                    </label>
+                </div>
+               
+                <br />
+                <button name="continueConsent" class="btn btn-primary" ng-click="vm.closeModal()" ng-disabled="vm.model.mitrwoPolitwnConsent ==  null">Συνέχεια</button>
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+</div>

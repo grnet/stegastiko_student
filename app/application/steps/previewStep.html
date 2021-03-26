@@ -1,0 +1,220 @@
+﻿<div class="section">
+<hr />
+<h3 ng-show="vm.isGuardian()">ΒΗΜΑ 5:</h3>
+<h3 ng-show="!vm.isGuardian()">ΒΗΜΑ 4:</h3>
+
+<div style="width: 600px">
+    <button name="print" type="button" class="btn btn-info" ng-click="vm.printTerms()">Εκτύπωση υπεύθυνης δήλωσης</button>
+    <br/>
+    <br/>
+    <div style="width: 600px; height: 200px;">
+        <iframe width="600" id="ifUsageTerms" name="ifUsageTerms" src="../../../Content/pages/UsageTerms.html"></iframe>
+        <br/>
+        <br/>
+        <label style="font-weight: bold">
+            <input type="checkbox" name="checkUsage" ng-model="vm.model.usageTermsChecked" ng-click="vm.doCheck()" id="chkUsage" ng-checked="vm.canSubmit()" required/>
+            Δηλώνω υπεύθυνα όσα αναγράφονται στην ως άνω υπεύθυνη δήλωση
+        </label>        
+    </div>
+</div>
+<h3>Προεπισκόπηση των δηλωθέντων στοιχείων της αίτησης</h3>
+<div>
+    <label>Τύπος:</label>
+    <span ng-if="vm.isGuardian()">Αίτηση γονέα</span>
+    <span ng-if="!vm.isGuardian()">Αίτηση φοιτητή</span>    
+</div>
+<div  ng-if="!vm.isGuardian()">
+    <label>Ειδική κατηγορία:</label>
+    <span>{{vm.getLabelSpecialCategory()}}</span>
+</div>
+<div ng-if="vm.showMitrwoConsent()">
+    <label>Συναινέσατε στην αναζήτηση της Βεβαίωσης Οικογενειακής Κατάστασης:</label>
+    <span>{{vm.getMitrwoConsent()}}</span>
+</div>
+<h4 ng-if="vm.isGuardian()">Στοιχεία δικαιούχου</h4>
+<h4 ng-if="!vm.isGuardian()">Στοιχεία δικαιούχου-φοιτητή</h4>
+<form class="form-horizontal" name="previewForm">
+    <div >
+        <label style="font-weight:bold;" >ΑΦΜ:</label>
+
+        <span class="text-info" >{{vm.application.user.afm}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Όνομα:</label>
+        <span class="text-info">{{vm.application.user.firstName}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Επώνυμο:</label>
+
+        <span  class="text-info" >{{vm.application.user.lastName}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Στοιχεία κατοικίας:</label>
+
+        <span  class="text-info" >{{ vm.getUserAddress()}}</span>
+    </div>
+    <br/>
+    <h4 ng-show="vm.isGuardian()">Στοιχεία φοιτητή για τον οποίο γίνεται η αίτηση του στεγαστικού επιδόματος</h4>
+    <div ng-show="vm.isGuardian()">
+        <label style="font-weight:bold;">ΑΦΜ:</label>
+        <span  class="text-info"  >{{vm.application.student.studentAFM}}</span>
+    </div>
+    <div>
+        <label style="font-weight:bold;">Όνομα (με βάση τα στοιχεία της ΑΑΔΕ):</label>
+        <span class="text-info">{{vm.application.student.studentFirstNameGsis}}</span>
+    </div>
+    <div>
+        <label style="font-weight:bold;">Επώνυμο (με βάση τα στοιχεία της ΑΑΔΕ):</label>
+        <span class="text-info">{{vm.application.student.studentLastNameGsis}}</span>
+    </div>   
+    <div >
+        <label style="font-weight:bold;">Έτος γέννησης:</label>
+
+        <span  class="text-info"  >{{vm.application.student.studentBirthYear}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;" >Υπήκοος χώρας της Ε.Ε.:</label>
+
+        <span  class="text-info"  >{{vm.isEUCitizen()}}</span>
+    </div>
+    <br/>
+    <div>
+        <label style="font-weight:bold;" ng-if="!vm.areParentsAbroad()">AMKA:</label>
+        <label style="font-weight:bold;" ng-if="vm.areParentsAbroad()">AMKA/EKAA:</label>
+        <span class="text-info">{{vm.application.student.studentAMKA}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Αρ. ακαδημαϊκής ταυτότητας:</label>
+
+        <span  class="text-info"  >{{vm.application.student.academicIDNumber}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Όνομα (με βάση τα στοιχεία της ακ. ταυτότητας):</label>
+
+        <span  class="text-info"  >{{vm.application.student.studentFirstName}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Επώνυμο (με βάση τα στοιχεία της ακ. ταυτότητας):</label>
+
+        <span  class="text-info"  >{{vm.application.student.studentLastName}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Σχολή/Τμήμα:</label>
+
+        <span  class="text-info"  >{{vm.application.student.department}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Ίδρυμα:</label>
+
+        <span  class="text-info"  >{{vm.application.student.institution}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Έδρα σχολής:</label>
+        <span  class="text-info"  >{{vm.application.student.schoolAddressCity}}, {{vm.application.student.schoolAddressPrefecture}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Έτος εισαγωγής:</label>
+
+        <span  class="text-info"  >{{vm.application.student.entryYear}}</span>
+    </div>
+    <div >
+        <label style="font-weight:bold;">Έχει άλλο πτυχίο:</label>
+
+        <span  class="text-info"  >{{vm.hasOtherDegree()}}</span>
+    </div>
+    <br />
+    <h4 ng-show="vm.isGuardian()">Στοιχεία έτερου γονέα του φοιτητή</h4>
+    <h4 ng-show="!vm.isGuardian()">Στοιχεία συζύγου</h4>
+    <div ng-show="vm.application.otherParentOrSpouseAFM != null">
+        <div >
+            <label style="font-weight:bold;">ΑΦΜ:</label>
+            <span  class="text-info"  >{{vm.application.otherParentOrSpouseAFM}}</span>
+
+        </div>
+        <div >
+            <label style="font-weight:bold;">Όνομα:</label>
+
+            <span  class="text-info"  >{{vm.application.otherParentOrSpouseFirstName}}</span>
+        </div>
+        <div >
+            <label style="font-weight:bold;">Επώνυμο:</label>
+
+            <span  class="text-info"  >{{vm.application.otherParentOrSpouseLastName}}</span>
+        </div>
+    </div>
+    <div  ng-show="vm.application.otherParentHasDied === true">
+        <label>Δηλώσατε ότι ο έτερος γονέας του φοιτητή δεν είναι εν ζωή.</label>
+    </div>
+    <div  ng-show="vm.application.parentsAreDivorced === true">
+        <label >Δηλώσατε ότι δεν διατηρείτε πλέον έγγαμη σχέση με τον έτερο γονέα του φοιτητή.</label>
+    </div>
+    <div  ng-show="vm.application.notMarried === true">
+        <label >Δηλώσατε ότι δεν είστε έγγαμος.</label>
+    </div>
+    <br />
+    <h4>Στοιχεία μισθωμένης κατοικίας του φοιτητή</h4>
+    <div ng-show="vm.application.rentalContractCode != null && vm.application.rentalContractCode.length > 0">
+        <div >
+            <label style="font-weight:bold;">Κωδικός μισθωτήριου συμβολαίου:</label>
+            <span  class="text-info"  >{{vm.application.rentalContractCode}}</span>
+        </div>
+        <div >
+            <label style="font-weight:bold;">Στοιχεία διεύθυνσης:</label>
+            <span  class="text-info"  >{{vm.application.rentalAddress}}</span>
+        </div>
+        <div >
+            <label style="font-weight:bold;">Έναρξη συμβολαίου:</label>
+            <span class="text-info">{{vm.application.rentalContractStartDate | date: 'dd/MM/yyyy'}}</span>
+        </div>
+        <div >
+            <label style="font-weight:bold;">Λήξη συμβολαίου:</label>
+            <span class="text-info">{{vm.application.rentalContractEndDate | date: 'dd/MM/yyyy'}}</span>
+        </div>
+    </div>
+    <div >
+        <label ng-show="vm.application.aadeMissingContractData">
+            Δηλώσατε ότι τα στοιχεία που επέστρεψε το Π.Σ. της ΑΑΔΕ ήταν ελλιπή.
+        </label>
+        <label ng-show="vm.application.contractNotRegisteredWithAADE">
+            Δηλώσατε ότι το συμβόλαιο δεν έχει καταχωρισθεί στο Π.Σ της ΑΑΔΕ.
+        </label>
+        <label ng-show="vm.application.isHotelOrPension">
+            Δηλώσατε ότι ο φοιτητής διαμένει σε ξενοδοχείο ή πανσιόν.
+        </label>
+    </div>
+    <div >   
+        <br />
+        <div style="color: red" ng-show="!vm.canSubmit()"><span class="text-danger">Για να μπορέσετε να επιλέξετε Έλεγχος κριτηρίων θα πρέπει να διαβάσετε και αποδεχθείτε όσα αναφέρονται στην υπεύθυνη δήλωση</span></div>
+        <br/>
+        <button name="submitAndCheck" type="button" data-toggle="modal" data-target="#myModal" ng-disabled="!vm.canSubmit()" ng-show="vm.application.applicationStatus != 5" class="btn btn-primary">Έλεγχος κριτηρίων</button>
+    </div>
+    <div class="wizard-bottom-nav-right">
+        <input type="button" value="&laquo; Προηγούμενο" class="btn btn-link" ng-click="$parent.vm.goToPreviousStep()"/>
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button name="confirmSubmission" type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Επιβεβαίωση</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Πατώντας το κουμπί "Έλεγχος κριτηρίων", τα στοιχεία που έχετε καταχωρίσει θα αποσταλούν στην ΑΑΔΕ προκειμένου να ελεγχθούν τα εισοδηματικά και περιουσιακά στοιχεία των ΑΦΜ που έχετε δηλώσει στην αίτηση, καθώς και τα στοιχεία κύριας κατοικίας και της μισθωμένης από το φοιτητή κατοικίας.
+                    </p>    
+                    <p>
+                        Μετά τον έλεγχο των κριτηρίων, δεν θα μπορείτε να τροποποιήσετε τα στοιχεία που έχετε δηλώσει, παρά μόνο να υποβάλετε την αίτησή σας με τα στοιχεία που έχετε ήδη καταχωρίσει.
+                    </p>    
+                </div>
+                <div class="modal-footer">
+                    <button name="cancel" type="button" class="btn btn-orig" data-dismiss="modal">Ακύρωση</button>
+                    <button name="submit" type="submit" class="btn btn-primary ng-scope" ng-click="vm.save()" data-dismiss="modal">Έλεγχος κριτηρίων</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</div>

@@ -1,0 +1,175 @@
+﻿<div class="section" ng-show="vm.student == null">
+    <hr />
+    <h3>ΒΗΜΑ 1:</h3>
+    <h4>Εισαγωγή αριθμού ακαδημαϊκής ταυτότητας για άντληση στοιχείων από την εφαρμογή της ακαδημαϊκής ταυτότητας</h4>
+    <p class="text-info" ng-show="vm.isGuardian()">
+        Θα πρέπει να καταχωρίσετε τον αριθμό ακαδημαϊκής ταυτότητας  και τον ΑΜΚΑ του φοιτητή, εξαρτώμενου μέλους σας, για τον οποίο θέλετε να υποβάλετε αίτηση στεγαστικού επιδόματος:
+    </p>
+    <p class="text-info" ng-show="!vm.isGuardian()">
+        Θα πρέπει να καταχωρίσετε τον αριθμό ακαδημαϊκής ταυτότητας για τον οποίο θέλετε να υποβάλετε αίτηση στεγαστικού επιδόματος:
+    </p>
+
+    <form class="form-horizontal" name="academicIdForm">
+        <div class="form-group">
+            <label class="col-md-2 control-label">Αρ. ακαδημαϊκής ταυτότητας:</label>
+            <div class="col-md-10">
+                <input name="academicIdNumber" title="Αρ. ακαδημαϊκής ταυτότητας:" placeholder="Συμπληρώστε το 12ψήφιο κωδικό ακ. ταυτότητας (υποχρεωτικό)" academic-id class="form-control" required ng-required="true" ng-model="vm.model.academicIdNumber"/>
+                <span style="color: red" ng-show="academicIdForm.academicIdNumber.$invalid && academicIdForm.academicIdNumber.$dirty"><span class="text-danger" ng-show="academicIdForm.academicIdNumber.$error.required">Το πεδίο 'Αρ. ακαδημαϊκής ταυτότητας' είναι υποχρεωτικό.</span></span>
+                <span style="color: red" ng-show="academicIdForm.academicIdNumber.$invalid && academicIdForm.academicIdNumber.$dirty"><span class="text-danger" ng-show="academicIdForm.academicIdNumber.$error.academicId">Δεν έχετε εισάγει έγκυρο αρ. ακαδημαϊκής ταυτότητας</span></span>
+            </div>
+        </div>
+        <div class="form-group" ng-if="vm.areParentsAbroad()" style="padding-left: 15px">
+            <label><strong>Εισαγωγή Αριθμού Μητρώου Κοινωνικής Ασφάλισης</strong></label>
+            <br />
+            <br />
+            <p>
+                Θα πρέπει να καταχωρίσετε τον ελληνικό Αριθμό Μητρώου Κοινωνικής Ασφάλισης (ΑΜΚΑ).
+                Εναλλακτικά, εφόσον δεν διαθέτετε ελληνικό ΑΜΚΑ, μπορείτε να συμπληρώσετε τον αριθμό Ευρωπαϊκής Κάρτας Ασφάλισης Ασθενείας (ΕΚΑΑ) στο αντίστοιχο πεδίο.
+            </p>
+            <div>
+                <label>
+                    ΑΜΚΑ
+                    <input name="amka" type="radio" ng-model="vm.model.isAmkaNumber" ng-value="true" ng-checked="vm.model.isAmkaNumber" />
+                </label>
+                <label>
+                    ΕΚΑΑ
+                    <input name="ekaa" type="radio" ng-model="vm.model.isAmkaNumber" ng-value="false" ng-checked="!vm.model.isAmkaNumber" />
+                </label>
+            </div>
+
+        </div>        
+        <div class="form-group" ng-if="!vm.areParentsAbroad() || (vm.areParentsAbroad() && vm.model.isAmkaNumber)">
+            <label class="col-md-2 control-label">AMKA:</label>
+            <div class="col-md-10">
+                <input name="amka" class="form-control" placeholder="Συμπληρώστε τον ΑΜΚΑ (υποχρεωτικό)" title="AMKA" amka required ng-required="true" ng-model="vm.model.amka" />
+                <span style="color: red" ng-show="academicIdForm.amka.$invalid && academicIdForm.amka.$dirty">
+                    <span class="text-danger" ng-show="academicIdForm.amka.$error.required">Το πεδίο 'AMKA' είναι υποχρεωτικό.</span>
+                    <span class="text-danger" ng-show="academicIdForm.amka.$error.amka">Δεν έχετε εισάγει έγκυρο AMKA.</span>
+                </span>
+            </div>            
+        </div>        
+        <div class="form-group" ng-if="vm.areParentsAbroad() && !vm.model.isAmkaNumber">
+            <label class="col-md-2 control-label">ΕΚΑΑ:</label>
+            <div class="col-md-10">
+                <input name="amka" class="form-control" placeholder="Συμπληρώστε το ΕΚΑΑ (υποχρεωτικό)" title="ΕΚΑΑ" required ng-required="true" ng-model="vm.model.amka" />
+                <span style="color: red" ng-show="academicIdForm.amka.$invalid && academicIdForm.amka.$dirty">
+                    <span class="text-danger" ng-show="academicIdForm.amka.$error.required">Το πεδίο 'AMKA/ΕΚΑΑ' είναι υποχρεωτικό.</span>                    
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button name="continue" class="btn btn-orig" ng-click="vm.getAcademicIDData()" ng-disabled="academicIdForm.$invalid">
+                    Συνέχεια
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="section" ng-show="vm.student != null">
+    <form class="form-horizontal">
+        <hr />
+        <div class="text-danger"></div>
+        <h2>Επιβεβαίωση των στοιχείων που αντλήθηκαν από την εφαρμογή της ακαδημαϊκής ταυτότητας για τον φοιτητή </h2>
+        <p class="text-info">
+            Η εφαρμογή της ακαδημαϊκής ταυτότητας επέστρεψε τα ακόλουθα στοιχεία για τον αριθμό ακαδημαϊκής ταυτότητας που δώσατε:
+        </p>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Αρ. ακαδημαϊκής ταυτότητας</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.academicIDNumber}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label" ng-if="!vm.areParentsAbroad()">AMKA</label>
+            <label class="col-md-2 control-label" ng-if="vm.areParentsAbroad()">AMKA/EKAA</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.studentAMKA}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Όνομα</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.studentFirstName}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Επώνυμο</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.studentLastName}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Σχολή/Τμήμα</label>
+            <div class="col-md-4">
+                <p class="form-control-static">
+                    {{vm.student.department}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Ίδρυμα</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.institution}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Έδρα Σχολής</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.schoolAddressCity}}, {{vm.student.schoolAddressPrefecture}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Έτος εισαγωγής</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.entryYear}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Έχει άλλο πτυχίο</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.student.hasOtherDegree == 1? "ΝΑΙ": "ΟΧΙ"}}
+                </p>
+            </div>
+        </div>
+
+        <p class="text-info" ng-show="vm.student == null && vm.application.applicationStatus == vm.getStepApplicationStatus()">
+            Τα στοιχεία αυτά δεν μπορείτε να τα τροποποιήσετε μέσα στην εφαρμογή του στεγαστικού επιδόματος και θα χρησιμοποιηθούν ως έχουν, σε οποιαδήποτε αίτηση στεγαστικού επιδόματος υποβάλετε.
+            <strong>Εάν τα παραπάνω στοιχεία είναι σωστά, επιλέξτε  ΕΠΙΒΕΒΑΙΩΣΗ ΤΩΝ ΣΤΟΙΧΕΙΩΝ & ΣΥΝΕΧΕΙΑ ΤΗΣ ΑΙΤΗΣΗΣ.</strong>
+            Εάν κάποια από τα στοιχεία αυτά δεν είναι σωστά (π.χ. τα στοιχεία διεύθυνσης), θα πρέπει να επιλέξετε ΑΚΥΡΩΣΗ ΑΙΤΗΣΗΣ, να προβείτε στις απαραίτητες διορθώσεις στο TaxisNet (π.χ. αλλαγή διεύθυνσης) και ακολούθως να πραγματοποιήσετε νέα είσοδο στην εφαρμογή του στεγαστικού επιδόματος.
+        </p>
+
+        <p class="alert alert-warning" ng-show="vm.showCanceledAtMessage()">
+            Η αρμόδια υπηρεσία του Ιδρύματός σας θα ελέγξει εάν είχατε την φοιτητική ιδιότητα για τουλάχιστον έξι μήνες κατά το Ακαδημαϊκό έτος {{ vm.activeAcademicYearLabel }}
+        </p>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <button class="btn btn-orig" ng-show="vm.showSubmit()" ng-click="vm.startOver()">Αλλαγή στοιχείων ακαδημαϊκής ταυτότητας</button>
+                <button name="cancel" class="btn btn-orig" ng-click="vm.cancel()" ng-show="vm.student != null && vm.application.applicationStatus < vm.getStepApplicationStatus()">Ακύρωση αίτησης</button>
+                <button name="confirmAndContinue" type="submit" class="btn btn-info" ng-click="vm.save()" ng-show="vm.showSubmit()">Επιβεβαίωση των στοιχείων και συνέχεια της αίτησης</button>
+            </div>
+        </div>
+        <div class="wizard-bottom-nav-right" ng-show="!vm.showSubmit()">
+            <input type="button" value="&laquo; Προηγούμενο" class="btn btn-link" ng-show="false" ng-click="$parent.vm.goToPreviousStep()" />
+            <input type="button" value="Επόμενο &raquo;" class="btn btn-primary" ng-click="$parent.vm.goToNextStep()" />
+        </div>
+    </form>
+</div>

@@ -1,0 +1,109 @@
+﻿<div class="section" ng-show="vm.application.student.studentAFM == null">
+    <hr />
+    <h3>ΒΗΜΑ 2:</h3>
+    <h4>Εισαγωγή ΑΦΜ του φοιτητή για άντληση στοιχείων από ΑΑΔΕ</h4>
+    <p class="text-info">
+        Θα πρέπει να καταχωρίσετε το ΑΦΜ του φοιτητή, εξαρτώμενου μέλους σας, για τον οποίο θέλετε να υποβάλετε αίτηση στεγαστικού επιδόματος:
+    </p>
+    <form class="form-horizontal" name="studentTaxForm">
+        <div class="form-group">
+            <label class="col-md-2 control-label">ΑΦΜ φοιτητή:</label>
+            <div class="col-md-10">
+                <input afm name="studentAFM" class="form-control" required ng-required="true" ng-model="vm.model.StudentAFM" placeholder="Συμπληρώστε το ΑΦΜ του φοιτητή (υποχρεωτικό)"/>
+                <span style="color: red" ng-show="studentTaxForm.studentAFM.$invalid && studentTaxForm.studentAFM.$dirty">
+                    <span class="text-danger" ng-show="studentTaxForm.studentAFM.$error.required">Το πεδίο 'ΑΦΜ φοιτητή' είναι υποχρεωτικό.</span>
+                    <span class="text-danger" ng-show="studentTaxForm.studentAFM.$error.afm">Δεν έχετε εισάγει έγκυρο ΑΦΜ.</span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Όνομα φοιτητή:</label>
+            <div class="col-md-10">
+                <input name="studentFirstName" class="form-control" required ng-required="true" ng-model="vm.model.StudentFirstName"/>
+                <span style="color: red" ng-show="studentTaxForm.studentFirstName.$invalid"><span class="text-danger" ng-show="studentTaxForm.studentFirstName.$error.required">Εισάγεται τουλάχιστον τους δύο πρώτους χαρακτήρες του ονόματος, με κεφαλαία γράμματα</span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Επώνυμο φοιτητή:</label>
+            <div class="col-md-10">
+                <input name="studentLastName" class="form-control" required ng-required="true" ng-model="vm.model.StudentLastName"/>
+                <span style="color: red" ng-show="studentTaxForm.studentLastName.$invalid"><span class="text-danger" ng-show="studentTaxForm.studentLastName.$error.required">Εισάγεται τουλάχιστον τους δύο πρώτους χαρακτήρες του επωνύμου, με κεφαλαία γράμματα</span></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button name="continue" class="btn btn-primary" ng-click="vm.getStudentGsisData()" ng-disabled="studentTaxForm.$invalid">Συνέχεια</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="section" ng-show="vm.application.student.studentAFM != null">
+    <form class="form-horizontal">
+        <hr />
+        <div class="text-danger"></div>
+        <h2>Επιβεβαίωση των στοιχείων που αντλήθηκαν από ΑΑΔΕ για τον φοιτητή</h2>
+        <p class="text-info">
+            Η ΑΑΔΕ επέστρεψε τα ακόλουθα στοιχεία για το ΑΦΜ που δώσατε:
+        </p>
+        <div class="form-group">
+            <label class="col-md-2 control-label">ΑΦΜ</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.application.student.studentAFM}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Όνομα</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.application.student.studentFirstName}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Επώνυμο</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.application.student.studentLastName}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Έτος γέννησης</label>
+            <div class="col-md-10">
+                <p class="form-control-static">
+                    {{vm.application.student.studentBirthYear}}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">Υπήκοος χώρας της Ε.Ε</label>
+            <div class="col-md-4">
+                <p class="form-control-static" style="text-align: left">
+                        {{vm.isEUCitizen()}}
+                </p>
+            </div>
+        </div>
+
+        <p class="text-info" ng-show="vm.application.student.studentAFM != null && vm.application.applicationStatus <= vm.getStepApplicationStatus()">
+            Εάν τα παραπάνω στοιχεία είναι σωστά, επιλέξτε <strong>ΕΠΙΒΕΒΑΙΩΣΗ ΤΩΝ ΣΤΟΙΧΕΙΩΝ ΚΑΙ ΣΥΝΕΧΕΙΑ ΤΗΣ ΑΙΤΗΣΗΣ</strong>
+        </p>
+        <p class="text-info" ng-show="vm.application.student.studentAFM != null && vm.application.applicationStatus <= vm.getStepApplicationStatus()">
+            Εάν κάποια από τα στοιχεία αυτά δεν είναι σωστά, θα πρέπει πρώτα να προβείτε στις 
+            ενδεδειγμένες ενέργειες στο μητρώο της ΑΑΔΕ και μετά από αυτό να συνεχίσετε με την δημιουργία της αίτησης.
+        </p>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <button class="btn btn-orig" ng-click="vm.startOver()" ng-show="vm.showSubmitBtn()">Αναζήτηση με άλλο ΑΦΜ</button>
+                <button name="confirmAndContinue" type="submit" class="btn btn-info" ng-click="vm.save()" ng-show="vm.showSubmitBtn()">Επιβεβαίωση των στοιχείων και συνέχεια της αίτησης</button>
+            </div>
+        </div>
+        <div class="wizard-bottom-nav-right" ng-show="!vm.showSubmitBtn()">
+            <input name ="previous" type="button"  value="&laquo; Προηγούμενο" class="btn btn-link" ng-click="$parent.vm.goToPreviousStep()" />
+            <input name="next" type="button"  value="Επόμενο &raquo;" class="btn btn-primary" ng-click="$parent.vm.goToNextStep()" />
+        </div>
+    </form>
+</div>

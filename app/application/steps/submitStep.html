@@ -1,0 +1,80 @@
+﻿<!--decision: number;
+        familyIncomeDoesNotExceedAcceptanceLimit: number;
+        rentalAddressCityFulfilled: number;
+        renterCriteriaFulfilled: number;
+        residentialPropertyCriteriaFulfilled: number;
+        studentAddressCityCriteriaFulfilled: number;
+        studentIsRegisteredAsDependentMember: number;
+        totalPropertyCriteriaFulfilled: number;-->
+
+<div class="section">
+    <hr />    
+    <h3 ng-show="vm.isGuardian()">ΒΗΜΑ 6:</h3>
+    <h3 ng-show="!vm.isGuardian()">ΒΗΜΑ 5:</h3>
+    <h4>Αποτελέσματα αξιολόγησης της αίτησης</h4>
+    <p class="text-info">
+        Με βάση τους ελέγχους που πραγματοποιήθηκαν από τα στοιχεία που τηρεί η ΑΑΔΕ, διαπιστώθηκαν τα εξής:
+    </p>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-md-10 control-label">Ο φοιτητής για λογαριασμό του οποίου κάνατε την αίτηση, είναι πράγματι δηλωμένος ως εξαρτώμενο μέλος στη φορολογική σας δήλωση</label>
+            <label class="col-md-2 control-label" ng-style="(vm.application.studentIsRegisteredAsDependentMember === 1 && {'color': 'green'}
+                   || vm.application.studentIsRegisteredAsDependentMember === 2 && {'color': 'blue'})
+                   || vm.application.studentIsRegisteredAsDependentMember === 0 && {'color': 'red'} ">{{vm.application.studentIsRegisteredAsDependentMember === 1 ? "ΝΑΙ" : (vm.application.studentIsRegisteredAsDependentMember === 2 ? "ΑΓΝΩΣΤΟ": "ΟΧΙ")}}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-10 control-label">Τηρείται το κριτήριο του οικογενειακού εισοδήματος, με βάση την δήλωσή σας του {{ vm.texYear }} </label>
+            <label class="col-md-2 control-label" ng-style="(vm.application.familyIncomeDoesNotExceedAcceptanceLimit === 1 && {'color': 'green'}
+                   || vm.application.familyIncomeDoesNotExceedAcceptanceLimit === 2 && {'color': 'blue'})
+                   || vm.application.familyIncomeDoesNotExceedAcceptanceLimit === 0 && {'color': 'red'} ">{{vm.application.familyIncomeDoesNotExceedAcceptanceLimit === 1 ? "ΝΑΙ" : (vm.application.familyIncomeDoesNotExceedAcceptanceLimit === 2 ? "ΑΓΝΩΣΤΟ": "ΟΧΙ")}}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-10 control-label">Η διεύθυνση της κύριας κατοικίας του φοιτητή τηρεί τα κριτήρια της δράσης, ως προς την πόλη φοίτησης</label>
+            <label class="col-md-2 control-label" ng-style="(vm.application.studentAddressCityCriteriaFulfilled === 1 && {'color': 'green'}
+                   || vm.application.studentAddressCityCriteriaFulfilled === 2 && {'color': 'blue'})
+                   || vm.application.studentAddressCityCriteriaFulfilled === 0 && {'color': 'red'} ">{{vm.application.studentAddressCityCriteriaFulfilled === 1 ? "ΝΑΙ" : (vm.application.studentAddressCityCriteriaFulfilled === 2 ? "ΑΓΝΩΣΤΟ": "ΟΧΙ")}}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-10 control-label">Τηρούνται τα περιουσιακά κριτήρια της δράσης όσον αφορά την κυριότητα κατοικιών από το φοιτητή και τους γονείς του</label>
+            <label class="col-md-2 control-label" ng-style="(vm.application.residentialPropertyCriteriaFulfilled === 1 && {'color': 'green'}
+                   || vm.application.residentialPropertyCriteriaFulfilled === 2 && {'color': 'blue'})
+                   || vm.application.residentialPropertyCriteriaFulfilled === 0 && {'color': 'red'} ">{{vm.application.residentialPropertyCriteriaFulfilled === 1 ? "ΝΑΙ" : (vm.application.residentialPropertyCriteriaFulfilled === 2 ? "ΑΓΝΩΣΤΟ": "ΟΧΙ")}}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-10 control-label">Tηρούνται τα περιουσιακά κριτήρια της δράσης, που αφορούν τη συνολική ακίνητη περιουσία του φοιτητή και των γονέων του</label>
+            <label class="col-md-2 control-label" ng-style="(vm.application.totalPropertyCriteriaFulfilled === 1 && {'color': 'green'}
+                   || vm.application.totalPropertyCriteriaFulfilled === 2 && {'color': 'blue'})
+                   || vm.application.totalPropertyCriteriaFulfilled === 0 && {'color': 'red'} ">{{vm.application.totalPropertyCriteriaFulfilled === 1 ? "ΝΑΙ" : (vm.application.totalPropertyCriteriaFulfilled === 2 ? "ΑΓΝΩΣΤΟ": "ΟΧΙ")}}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-10 control-label">Τηρούνται τα κριτήρια της δράσης, ως προς το ποιος εμφανίζεται ως ενοικιαστής της ενοικιαζόμενης κατοικίας</label>
+            <label class="col-md-2 control-label" ng-style="(vm.application.renterCriteriaFulfilled === 1 && {'color': 'green'}
+                   || vm.application.renterCriteriaFulfilled === 2 && {'color': 'blue'})
+                   || vm.application.renterCriteriaFulfilled === 0 && {'color': 'red'} ">{{vm.application.renterCriteriaFulfilled === 1 ? "ΝΑΙ" : (vm.application.renterCriteriaFulfilled === 2 ? "ΑΓΝΩΣΤΟ": "ΟΧΙ")}}</label>
+        </div>
+        <div class="form-group">
+            <label class="col-md-10 control-label">Τηρούνται τα κριτήρια της δράσης, ως προς την τοποθεσία της ενοικιαζόμενης κατοικίας σε σχέση με την πόλη φοίτησης</label>
+            <label class="col-md-2 control-label" ng-style="(vm.application.rentalAddressCityFulfilled === 1 && {'color': 'green'}
+                   || vm.application.rentalAddressCityFulfilled === 2 && {'color': 'blue'})
+                   || vm.application.rentalAddressCityFulfilled === 0 && {'color': 'red'} ">{{vm.application.rentalAddressCityFulfilled === 1 ? "ΝΑΙ" : (vm.application.rentalAddressCityFulfilled === 2 ? "ΑΓΝΩΣΤΟ": "ΟΧΙ")}}</label>
+        </div>
+
+        <p class="text-info">
+            Κατά συνέπεια
+        </p>
+
+        <div class="form-group">
+            <label class="col-md-8 control-label" style="font-size: large" ng-style="vm.application.decision == 1 && {'color': 'green'}
+                   || vm.application.decision == 2 && {'color': 'blue'}
+                   || vm.application.decision == 0 && {'color': 'red'} ">{{vm.application.decision == 1 ? "Mπορεί να γίνει χορήγηση του στεγαστικού επιδόματος" : (vm.application.decision == 2 ? "ΑΓΝΩΣΤΟ": "Δεν μπορεί να γίνει χορήγηση του στεγαστικού επιδόματος")}}</label>
+        </div>
+
+
+        <p class="text-info">
+            Παρατηρήσεις:
+            Εάν αμφισβητείτε τα αποτελέσματα των αυτόματων ελέγχων της ΑΑΔΕ βάσει των οποίων έγινε η απόρριψη της αίτησης, θα πρέπει να προβείτε σε ένσταση εντός του χρονικού διαστήματος που προβλέπει η δράση.
+        </p>
+    </form>
+
+
+</div>

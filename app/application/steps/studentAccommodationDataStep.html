@@ -1,0 +1,169 @@
+﻿<div class="section" ng-show="vm.showSearch()">
+    <hr />
+    <h3 ng-show="vm.isGuardian()">ΒΗΜΑ 4:</h3>
+    <h3 ng-show="!vm.isGuardian()">ΒΗΜΑ 3:</h3>
+
+    <h4>Στοιχεία μισθωμένης κατοικίας</h4>
+    <p class="text-info">
+        Εισάγετε τον <strong>κωδικό του μισθωτήριου συμβολαίου </strong> της κατοικίας που ενοικιάζει ο φοιτητής, όπως αυτό αναγράφεται στο πληροφοριακό σύστημα μίσθωσης ακίνητης περιουσίας της ΑΑΔΕ.
+    </p>
+    <p class="text-info">
+        Το μισθωτήριο που θα εισάγετε πρέπει να καλύπτει τουλάχιστον έξι (6) μήνες μέσα στο Ακαδημαϊκό έτος {{ vm.activeAcademicYearLabel }} (δηλαδή από την {{ vm.rentAcademicIntervalLabel }}).
+    </p>
+    <form class="form-horizontal" name="studentAccommodationForm">
+        <div class="form-group">
+            <label class="col-md-3 control-label">ΑΦΜ μισθωτή:</label>
+            <div class="col-md-9">
+                <select name="afms" class="form-control" ng-model="vm.model.renterAFM">
+                    <option ng-repeat="afm in vm.afms" value="{{afm}}">{{afm}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">Κωδικός μισθωτήριου συμβολαίου:</label>
+            <div class="col-md-9">
+                <input name="rentalContractCode" type="number" class="form-control" ng-keyup="vm.clearOthers()" ng-model="vm.model.rentalContractCode" />
+                <span class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-offset-3 col-md-9">
+            <p>
+                <strong>Δηλώνω υπεύθυνα ότι δεν συμπλήρωσα τον κωδικό μισθωτήριου συμβολαίου για τον εξής λόγο:</strong>
+            </p>
+        </div>
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9" style="padding-left:34px">
+                    <div class="radio">
+                        <label>
+                            <input name="missingContract_1" type="radio" ng-click="vm.clearContract()" ng-model="vm.model.otherSelection" value="1" />
+                            Τα στοιχεία που επέστρεψε το Π.Σ. της ΑΑΔΕ ήταν ελλιπή<span style="color: red"> (Πρέπει να προσκομίσετε το μισθωτήριο συμβόλαιο. Λεπτομέρειες: <a style="text-decoration:underline" href="https://stegastiko.minedu.gov.gr/Files/Egkyklios_Stegastiko_20192020.pdf#page=3" target="_blank">παρ. Β2-Δ</a>)</span>
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input name="missingContract_2" type="radio" ng-click="vm.clearContract()" ng-model="vm.model.otherSelection" value="2" />
+                            Το συμβόλαιο δεν έχει καταχωρισθεί στο Π.Σ της ΑΑΔΕ<span style="color: red"> (πρέπει να προσκομίσετε το έντυπο μισθωτήριο συμβόλαιο)</span> ή έχει καταχωρισθεί με ΑΦΜ μισθωτή διαφορετικό από αυτά που μπορώ να επιλέξω <span style="color: red"> (πρέπει να προσκομίσετε το μισθωτήριο συμβόλαιο, πιστοποιητικό οικ. κατάστασης και υπεύθυνη δήλωση του μισθωτή ότι συναινεί στη χορήγηση του επιδόματος. Λεπτομέρειες: <a style="text-decoration:underline" href="https://stegastiko.minedu.gov.gr/Files/Egkyklios_Stegastiko_20192020.pdf#page=3" target="_blank">παρ. Β2-Δ</a>)</span>
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input name="missingContract_3" type="radio" ng-click="vm.clearContract()" ng-model="vm.model.otherSelection" value="3" />
+                            Ο φοιτητής διαμένει σε ξενοδοχείο ή πανσιόν <span style="color: red"> (Πρέπει να προσκομίσετε βεβαίωση παραμονής και απόδειξη παροχής υπηρεσιών εξάμηνης τουλάχιστον διάρκειας. Λεπτομέρειες: <a style="text-decoration:underline" href="https://stegastiko.minedu.gov.gr/Files/Egkyklios_Stegastiko_20192020.pdf#page=3" target="_blank">παρ. Β2-Δ</a>)</span>
+                        </label>
+                    </div>
+                    <br />
+                    <div>
+                        Περισσότερες πληροφορίες για τα έντυπα έγγραφα που πρέπει να προσκομίσετε στο Ίδρυμα του φοιτητή, μπορείτε να βρείτε στην <a style="text-decoration:underline" href="https://stegastiko.minedu.gov.gr/Files/Egkyklios_Stegastiko_20192020.pdf#page=3" target="_blank">εγκύκλιο</a>, στην παράγραφο Β2-Δ
+                    </div>
+                    <br />
+                </div>
+            </div>
+            <div class="form-group" ng-show="studentAccommodationForm.validationField.$invalid">
+                <label name="validationField" ng-required="vm.isRequired()" ng-model="vm.model.Hidden" />
+                <span class="col-md-offset-3 col-md-9" style="color: red"><span class="text-danger" ng-show="studentAccommodationForm.validationField.$error.required">Συμπληρώστε υποχρεωτικά τον κωδικό μισθωτήριου συμβολαίου ή επιλέξτε μια από τις άλλες τρεις επιλογές</span></span>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <button name="continue" class="btn btn-primary" ng-click="vm.getRentalContractGsisData()" ng-disabled="studentAccommodationForm.$invalid">Συνέχεια</button>
+                </div>
+            </div>
+</form>
+</div>
+<div class="section" ng-show="!vm.showSearch()">
+    <form class="form-horizontal">
+        <hr />
+        <div class="text-danger"></div>
+        <div ng-show="vm.application.rentalContractCode != null && vm.application.rentalContractCode > 0">
+            <h2>Επιβεβαίωση των στοιχείων που αντλήθηκαν από το Π.Σ. μίσθωσης ακίνητης περιουσίας  της ΑΑΔΕ</h2>
+            <p class="text-info">
+                Το Π.Σ. μίσθωσης ακίνητης περιουσίας της ΑΑΔΕ επέστρεψε τα ακόλουθα στοιχεία για τον κωδικό μισθωτήριου συμβολαίου που δώσατε:
+            </p>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Κωδικός μισθωτήριου συμβολαίου</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">
+                        {{vm.application.rentalContractCode}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Στοιχεία διεύθυνσης</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">
+                        {{vm.application.rentalKapCityName}} - {{vm.application.rentalPrefecture}}
+                    </p>
+                    <p class="form-control-static" ng-show="vm.application.rentalKapCityId == null">
+                        {{vm.application.rentalStreet}} {{vm.application.rentalStreetNo}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Ημ/νία έναρξης συμβολαίου</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">
+                        {{vm.application.rentalContractStartDate | date: 'dd/MM/yyyy'}}
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Ημ/νία λήξης συμβολαίου</label>
+                <div class="col-md-10">
+                    <p class="form-control-static">
+                        {{vm.application.rentalContractEndDate | date: 'dd/MM/yyyy'}}
+                    </p>
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-md-2 control-label">Διάρκεια συμβολαίου</label>
+                <div class="col-md-10">
+                    <label class="control-label">
+                        {{vm.application.rentalContractLength}}
+                    </label>
+                </div>
+            </div>-->
+            <div class="form-group">
+                <label class="col-md-2 control-label">Έχει ΑΤΑΚ</label>
+                <div class="col-md-10">                                                 
+                    <p class="form-control-static">
+                        {{vm.application.hasATAK ? "ΝΑΙ" : "ΟΧΙ"}}
+                    </p>                
+                </div>
+            </div>
+            <p class="text-info" ng-show="vm.showSearch() && vm.application.applicationStatus < vm.getCurrentStepStatus()">
+                Εάν τα παραπάνω στοιχεία είναι σωστά, επιλέξτε <strong>ΕΠΙΒΕΒΑΙΩΣΗ ΤΩΝ ΣΤΟΙΧΕΙΩΝ ΚΑΙ ΣΥΝΕΧΕΙΑ ΤΗΣ ΑΙΤΗΣΗΣ</strong>
+            </p>
+            <p class="text-info" ng-show="vm.showSearch() && vm.vm.application.applicationStatus < vm.getCurrentStepStatus()">
+                Εάν κάποια από τα στοιχεία αυτά δεν είναι σωστά, θα πρέπει πρώτα να επιλέξετε <strong>ΠΡΟΣΩΡΙΝΗ ΑΠΟΘΗΚΕΥΣΗ ΑΙΤΗΣΗΣ</strong>, να προβείτε στις
+                ενδεδειγμένες ενέργειες στο μητρώο της ΑΑΔΕ και μετά από αυτό να συνεχίσετε με την δημιουργία της αίτησης.
+            </p>
+        </div>
+        <div class="form-group">
+            <label class="col-md-8 control-label" ng-show="vm.application.aadeMissingContractData">
+                Δηλώσατε ότι τα στοιχεία που επέστρεψε το Π.Σ. της ΑΑΔΕ ήταν ελλιπή.
+            </label>
+            <label class="col-md-8 control-label" ng-show="vm.application.contractNotRegisteredWithAADE">
+                Δηλώσατε ότι το συμβόλαιο δεν έχει καταχωρισθεί στο Π.Σ της ΑΑΔΕ.
+            </label>
+            <label class="col-md-8 control-label" ng-show="vm.application.isHotelOrPension">
+                Δηλώσατε ότι ο φοιτητής διαμένει σε ξενοδοχείο ή πανσιόν.
+            </label>
+        </div>
+        
+        <div class="row" ng-if="vm.showRentalDurationRejectedMsg">
+            <p class="text-danger">Το μισθωτήριο συμβόλαιο που δώσατε δεν καλύπτει έξι (6) μήνες μέσα στο ακαδημαϊκό έτος {{ vm.activeAcademicYearLabel }} (δηλαδή μεταξύ {{ vm.rentAcademicIntervalLabel2 }})</p>            
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <button name="searchContract" class="btn btn-orig" ng-click="vm.startOver()" ng-show="!vm.showSearch() && vm.application.applicationStatus <= vm.getStepApplicationStatus()">Αναζήτηση με άλλο κωδικό μισθωτηρίου συμβολαίου</button>
+                <button name="changeContract" class="btn btn-orig" ng-click="vm.startOver()" ng-show="!vm.showSearch()  && vm.application.applicationStatus > vm.getStepApplicationStatus()">Αλλαγή στοιχείων μισθωμένης κατοικίας</button>
+                <button name="confirmAndContinue" type="submit" class="btn btn-info" ng-click="vm.save()" ng-show="vm.showSaveBtn()">Επιβεβαίωση των στοιχείων και συνέχεια της αίτησης</button>
+            </div>
+        </div>
+        <div class="wizard-bottom-nav-right" ng-show="!vm.showSaveBtn()">
+            <input name="previous" type="button" value="&laquo; Προηγούμενο" class="btn btn-link" ng-click="$parent.vm.goToPreviousStep()" />
+            <input name="next" type="button" value="Επόμενο &raquo;" class="btn btn-primary" ng-click="$parent.vm.goToNextStep()" />
+        </div>
+    </form>
+</div>

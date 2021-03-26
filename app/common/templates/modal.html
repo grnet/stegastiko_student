@@ -1,0 +1,11 @@
+﻿<div class="modal-header">
+    <span class="glyphicon" ng-class="vm.iconClass()"></span>&nbsp;
+    <h3 class="modal-title">{{vm.title}}</h3>
+</div>
+<div class="modal-body">
+    <div>{{vm.message}}</div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+    <button ng-if="vm.showCancel()" class="btn btn-warning" type="button" ng-click="vm.cancel()">Cancel</button>
+</div>
